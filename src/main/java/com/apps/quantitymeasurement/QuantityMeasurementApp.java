@@ -1,6 +1,5 @@
 package com.apps.quantitymeasurement;
 
-import java.util.Objects;
 import java.util.Scanner;
 
 public class QuantityMeasurementApp {
@@ -14,11 +13,17 @@ public class QuantityMeasurementApp {
 
         @Override
         public boolean equals(Object o) {
+            if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            Feet feet = (Feet) o;
-            return Double.compare(value, feet.value) == 0;
+            Feet other = (Feet) o;
+            if (this.value == null && other.value == null) {
+                return true;
+            }
+            if (this.value == null || other.value == null) {
+                return false;
+            }
+            return Double.compare(this.value, other.value) == 0;
         }
-
     }
 
     public static void main(String[] args) {
