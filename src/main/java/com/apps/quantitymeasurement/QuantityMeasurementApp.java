@@ -70,8 +70,20 @@ public class QuantityMeasurementApp {
         System.out.println(inches_result ? "Inches ::: Equal(true)" : "Inches :::  Not-Equal(false)");
     }
 
+    private static void demonstrateFeetInchesComparison() {
+        Length length1 = new Length(2.0, Length.LengthUnit.FEET);
+        Length length2 = new Length(24.0, Length.LengthUnit.INCHES);
+        boolean result = demonstrateLengthEquality(length1, length2);
+        System.out.println(result ? "FeetUsingLengthInches ::: Equal(true)" : "FeetUsingLengthInches :::  Not-Equal(false)");
+    }
+
+    public static boolean demonstrateLengthEquality(Length length1, Length length2) {
+        return length1.equals(length2);
+    }
+
     public static void main(String[] args) {
         demonstrateFeetEquality();
         demonstrateInchesEquality();
+        demonstrateFeetInchesComparison();
     }
 }
