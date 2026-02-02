@@ -2,6 +2,7 @@ package com.apps.quantitymeasurement;
 
 import org.junit.Test;
 
+import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateLengthComparison;
 import static org.junit.Assert.*;
 
 public class QuantityMeasurementAppTest {
@@ -119,31 +120,31 @@ public class QuantityMeasurementAppTest {
     }
 
     @Test
-    public void testEquality_FeetToFeet_SameValue(){
+    public void testEquality_FeetToFeet_SameValue() {
         Length length1 = new Length(2.0, Length.LengthUnit.FEET);
         Length length2 = new Length(2.0, Length.LengthUnit.FEET);
-        assertTrue(QuantityMeasurementApp.demonstrateLengthEquality(length1,length2));
+        assertTrue(QuantityMeasurementApp.demonstrateLengthEquality(length1, length2));
     }
 
     @Test
-    public void testEquality_InchesToInches_SameValue(){
+    public void testEquality_InchesToInches_SameValue() {
         Length length1 = new Length(2.0, Length.LengthUnit.INCHES);
         Length length2 = new Length(2.0, Length.LengthUnit.INCHES);
-        assertTrue(QuantityMeasurementApp.demonstrateLengthEquality(length1,length2));
+        assertTrue(QuantityMeasurementApp.demonstrateLengthEquality(length1, length2));
     }
 
     @Test
-    public void testEquality_NullComparison(){
+    public void testEquality_NullComparison() {
         Length length1 = new Length(null, null);
         Length length2 = new Length(null, null);
-        assertTrue(QuantityMeasurementApp.demonstrateLengthEquality(length1,length2));
+        assertTrue(QuantityMeasurementApp.demonstrateLengthEquality(length1, length2));
     }
 
     @Test
     public void testEquality_NullComparison_For_Second_Value() {
         Length length1 = new Length(2.0, null);
         Length length2 = new Length(2.0, null);
-        assertFalse(QuantityMeasurementApp.demonstrateLengthEquality(length1,length2));
+        assertFalse(QuantityMeasurementApp.demonstrateLengthEquality(length1, length2));
     }
 
 
@@ -151,41 +152,157 @@ public class QuantityMeasurementAppTest {
     public void testEquality_NullComparison_For_First_Value() {
         Length length1 = new Length(null, Length.LengthUnit.INCHES);
         Length length2 = new Length(null, Length.LengthUnit.FEET);
-        assertFalse(QuantityMeasurementApp.demonstrateLengthEquality(length1,length2));
+        assertFalse(QuantityMeasurementApp.demonstrateLengthEquality(length1, length2));
     }
 
     @Test
-    public void testEquality_InchesToFeet_EquivalentValue(){
+    public void testEquality_InchesToFeet_EquivalentValue() {
         Length length1 = new Length(12.0, Length.LengthUnit.INCHES);
         Length length2 = new Length(12.0, Length.LengthUnit.FEET);
-        assertFalse(QuantityMeasurementApp.demonstrateLengthEquality(length1,length2));
+        assertFalse(QuantityMeasurementApp.demonstrateLengthEquality(length1, length2));
     }
 
     @Test
-    public void testEquality_FeetToFeet_DifferentValue(){
+    public void testEquality_FeetToFeet_DifferentValue() {
         Length length1 = new Length(12.0, Length.LengthUnit.FEET);
         Length length2 = new Length(2.0, Length.LengthUnit.FEET);
-        assertFalse(QuantityMeasurementApp.demonstrateLengthEquality(length1,length2));
+        assertFalse(QuantityMeasurementApp.demonstrateLengthEquality(length1, length2));
     }
 
     @Test
-    public void testEquality_InchesToInches_DifferentValue(){
+    public void testEquality_InchesToInches_DifferentValue() {
         Length length1 = new Length(12.0, Length.LengthUnit.INCHES);
         Length length2 = new Length(2.0, Length.LengthUnit.INCHES);
-        assertFalse(QuantityMeasurementApp.demonstrateLengthEquality(length1,length2));
+        assertFalse(QuantityMeasurementApp.demonstrateLengthEquality(length1, length2));
     }
 
     @Test
-    public void testEquality_InvalidUnits(){
+    public void testEquality_InvalidUnits() {
         Length length1 = new Length(12.0, Length.LengthUnit.INCHES);
-        assertThrows(Exception.class,()->QuantityMeasurementApp.demonstrateLengthEquality(length1, (Length) new Object()));
+        assertThrows(Exception.class, () -> QuantityMeasurementApp.demonstrateLengthEquality(length1, (Length) new Object()));
     }
 
     @Test
-    public void testEquality_SameReference(){
+    public void testEquality_SameReference() {
         Length length1 = new Length(12.0, Length.LengthUnit.INCHES);
         Length length2 = length1;
-        assertTrue(QuantityMeasurementApp.demonstrateLengthEquality(length1,length2));
+        assertTrue(QuantityMeasurementApp.demonstrateLengthEquality(length1, length2));
+    }
+
+
+    @Test
+    public void testDemonstrateLengthComparison_YardToYard_SameValue() {
+        var result = demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS, 1.0, Length.LengthUnit.YARDS);
+        assertTrue(result);
+    }
+
+    @Test
+    public void testDemonstrateLengthComparison_YardToYard_DifferentValue() {
+        var result = demonstrateLengthComparison(2.0, Length.LengthUnit.YARDS, 1.0, Length.LengthUnit.YARDS);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testDemonstrateLengthComparison_YardToFeet_SameValue() {
+        var result = demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS, 3.0, Length.LengthUnit.FEET);
+        assertTrue(result);
+    }
+
+    @Test
+    public void testDemonstrateLengthComparison_FeetToYard_SameValue() {
+        var result = demonstrateLengthComparison(3.0, Length.LengthUnit.FEET, 1.0, Length.LengthUnit.YARDS);
+        assertTrue(result);
+    }
+
+    @Test
+    public void testDemonstrateLengthComparison_YardToInches_SameValue() {
+        var result = demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS, 36.0, Length.LengthUnit.INCHES);
+        assertTrue(result);
+    }
+
+    @Test
+    public void testDemonstrateLengthComparison_InchesToYard_SameValue() {
+        var result = demonstrateLengthComparison(36.0, Length.LengthUnit.INCHES, 1.0, Length.LengthUnit.YARDS);
+        assertTrue(result);
+    }
+
+    @Test
+    public void testDemonstrateLengthComparison_YardToFeet_DifferentValue() {
+        var result = demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS, 33.0, Length.LengthUnit.FEET);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testDemonstrateLengthComparison_CentimetersToInches_SameValue() {
+        var result = demonstrateLengthComparison(1.0, Length.LengthUnit.CENTIMETRE, 0.393701, Length.LengthUnit.INCHES);
+        assertTrue(result);
+    }
+
+    @Test
+    public void testDemonstrateLengthComparison_CentimetersToFeet_DifferentSameValue() {
+        var result = demonstrateLengthComparison(1.0, Length.LengthUnit.CENTIMETRE, 1.0, Length.LengthUnit.FEET);
+        assertFalse(result);
+    }
+
+
+    @Test
+    public void testDemonstrateLengthComparison_MultiUnit_TransitiveProperty() {
+        assertTrue(demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS, 3.0, Length.LengthUnit.FEET));
+        assertTrue(demonstrateLengthComparison(3.0, Length.LengthUnit.FEET, 36.0, Length.LengthUnit.INCHES));
+        assertTrue(demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS, 36.0, Length.LengthUnit.INCHES));
+    }
+
+    @Test
+    public void testDemonstrateLengthComparison_YardWithNullUnit() {
+        var result = demonstrateLengthComparison(1.0, null, 33.0, Length.LengthUnit.FEET);
+        assertFalse(result);
+    }
+
+
+    @Test
+    public void testDemonstrateLengthComparison_YardSameReference() {
+        Double first_val = 1.0;
+        Length.LengthUnit yards = Length.LengthUnit.YARDS;
+
+        Double second_vale = first_val;
+        var result = demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS, second_vale, Length.LengthUnit.YARDS);
+        assertTrue(result);
+    }
+
+
+    @Test
+    public void testDemonstrateLengthComparison_YardWithNullComparison() {
+        var result = demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS, null, null);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testDemonstrateLengthComparison_CentimeterWithNullUnit() {
+        var result = demonstrateLengthComparison(1.0, null, 33.0, Length.LengthUnit.CENTIMETRE);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testDemonstrateLengthComparison_CentimeterSameReference() {
+        Double first_val = 1.0;
+        Length.LengthUnit yards = Length.LengthUnit.CENTIMETRE;
+
+        Double second_vale = first_val;
+        var result = demonstrateLengthComparison(1.0, Length.LengthUnit.CENTIMETRE, second_vale, Length.LengthUnit.CENTIMETRE);
+        assertTrue(result);
+    }
+
+    @Test
+    public void testDemonstrateLengthComparison_CentimeterWithNullComparison() {
+        var result = demonstrateLengthComparison(1.0, Length.LengthUnit.CENTIMETRE, null, null);
+        assertFalse(result);
+    }
+
+
+    @Test
+    public void testDemonstrateLengthComparison_AllUnits_ComplexScenario() {
+        assertTrue(demonstrateLengthComparison(2.0, Length.LengthUnit.YARDS, 6.0, Length.LengthUnit.FEET));
+        assertTrue(demonstrateLengthComparison(6.0, Length.LengthUnit.FEET, 72.0, Length.LengthUnit.INCHES));
     }
 
 }

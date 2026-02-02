@@ -1,7 +1,5 @@
 package com.apps.quantitymeasurement;
 
-import java.util.Scanner;
-
 public class QuantityMeasurementApp {
 
     public static class Feet {
@@ -81,9 +79,34 @@ public class QuantityMeasurementApp {
         return length1.equals(length2);
     }
 
+    public static boolean demonstrateLengthComparison(Double first_value, Length.LengthUnit first_unit,
+                                                      Double second_value, Length.LengthUnit second_unit) {
+        Length length1 = new Length(first_value, first_unit);
+        Length length2 = new Length(second_value, second_unit);
+
+        return length1.equals(length2);
+    }
+
     public static void main(String[] args) {
-        demonstrateFeetEquality();
-        demonstrateInchesEquality();
-        demonstrateFeetInchesComparison();
+//        demonstrateFeetEquality();
+//        demonstrateInchesEquality();
+//        demonstrateFeetInchesComparison();
+
+        demonstrateLengthComparison(1.0, Length.LengthUnit.FEET, 12.0, Length.LengthUnit.INCHES);
+
+        System.out.println(demonstrateLengthComparison(1.0, Length.LengthUnit.FEET, 12.0, Length.LengthUnit.INCHES)
+                ? "Equal(true)" : "Not-Equal(false)");
+
+        System.out.println(demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS, 36.0, Length.LengthUnit.INCHES)
+                ? "Equal(true)" : "Not-Equal(false)");
+
+        System.out.println(demonstrateLengthComparison(1.0, Length.LengthUnit.CENTIMETRE, 0.393701, Length.LengthUnit.INCHES)
+                ? "Equal(true)" : "Not-Equal(false)");
+
+        System.out.println(demonstrateLengthComparison(3.0, Length.LengthUnit.FEET, 1.0, Length.LengthUnit.YARDS)
+                ? "Equal(true)" : "Not-Equal(false)");
+
+        System.out.println(demonstrateLengthComparison(30.48, Length.LengthUnit.CENTIMETRE, 1.0, Length.LengthUnit.FEET)
+                ? "Equal(true)" : "Not-Equal(false)");
     }
 }

@@ -1,12 +1,16 @@
 package com.apps.quantitymeasurement;
 
+import java.text.DecimalFormat;
+
 public class Length {
     private Double value;
     private LengthUnit unit;
 
     public enum LengthUnit {
         FEET(12.0),
-        INCHES(1.0);
+        INCHES(1.0),
+        YARDS(36.0),
+        CENTIMETRE(0.393701);
 
         private final double conversionFactor;
 
@@ -25,7 +29,8 @@ public class Length {
     }
 
     private Double convertToBaseUnit() {
-        return value * unit.getConversionFactor();
+        DecimalFormat df = new DecimalFormat("#.##");
+        return Double.parseDouble(df.format(value * unit.getConversionFactor()));
     }
 
     public boolean compare(Length length) {
@@ -53,5 +58,13 @@ public class Length {
         Length length1 = new Length(2.0, LengthUnit.FEET);
         Length length2 = new Length(24.0, LengthUnit.INCHES);
         System.out.println("Are length equals: " + length1.equals(length2));
+
+        Length length3 = new Length(1.0, LengthUnit.YARDS);
+        Length length4 = new Length(36.0, LengthUnit.INCHES);
+        System.out.println("Are length equals: " + length3.equals(length4));
+
+        Length length5 = new Length(1.0, LengthUnit.CENTIMETRE);
+        Length length6 = new Length(0.393701, LengthUnit.INCHES);
+        System.out.println("Are length equals: " + length5.equals(length6));
     }
 }
