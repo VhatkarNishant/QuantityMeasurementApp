@@ -4,7 +4,9 @@ package com.apps.quantitymeasurement;
 import org.junit.jupiter.api.Test;
 
 import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateLengthComparison;
+import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateLengthConversion;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class QuantityMeasurementAppTest {
@@ -309,4 +311,65 @@ public class QuantityMeasurementAppTest {
         assertTrue(demonstrateLengthComparison(6.0, Length.LengthUnit.FEET, 72.0, Length.LengthUnit.INCHES));
     }
 
+    @Test
+    public void testDemonstrateLengthConversion_FeetToInches() {
+        assertEquals(new Length(12.0, Length.LengthUnit.INCHES), demonstrateLengthConversion(1.0, Length.LengthUnit.FEET, Length.LengthUnit.INCHES));
+    }
+
+    @Test
+    public void testDemonstrateLengthConversion_InchesToFeet() {
+        assertEquals(new Length(2.0, Length.LengthUnit.FEET), demonstrateLengthConversion(24.0, Length.LengthUnit.INCHES, Length.LengthUnit.FEET));
+    }
+
+    @Test
+    public void testDemonstrateLengthConversion_YardsToInches() {
+        assertEquals(new Length(36.0, Length.LengthUnit.INCHES), demonstrateLengthConversion(1.0, Length.LengthUnit.YARDS, Length.LengthUnit.INCHES));
+    }
+
+    @Test
+    public void testDemonstrateLengthConversion_InchesToYards() {
+        assertEquals(new Length(2.0, Length.LengthUnit.YARDS), demonstrateLengthConversion(72.0, Length.LengthUnit.INCHES, Length.LengthUnit.YARDS));
+    }
+
+    @Test
+    public void testDemonstrateLengthConversion_CentimetersToInches() {
+        assertEquals(new Length(1.0, Length.LengthUnit.INCHES), demonstrateLengthConversion(2.54, Length.LengthUnit.CENTIMETRE, Length.LengthUnit.INCHES));
+    }
+
+    @Test
+    public void testDemonstrateLengthConversion_FeedToYards() {
+        assertEquals(new Length(2.0, Length.LengthUnit.YARDS), demonstrateLengthConversion(6.0, Length.LengthUnit.FEET, Length.LengthUnit.YARDS));
+    }
+
+    @Test
+    public void testDemonstrateLengthConversion_RoundTrip_PreservesValue() {
+        Length length = new Length(6.0, Length.LengthUnit.FEET);
+        Double v = length.convertTo(Length.LengthUnit.YARDS);
+        assertEquals(length, demonstrateLengthConversion(v, Length.LengthUnit.YARDS, Length.LengthUnit.FEET));
+    }
+
+    @Test
+    public void testDemonstrateLengthConversion_Zero_Value() {
+        assertEquals(new Length(0.0, Length.LengthUnit.INCHES), demonstrateLengthConversion(0.0, Length.LengthUnit.FEET, Length.LengthUnit.INCHES));
+    }
+
+    @Test
+    public void testDemonstrateLengthConversion_NegativeValue() {
+        assertEquals(new Length(-12.0, Length.LengthUnit.INCHES), demonstrateLengthConversion(-1.0, Length.LengthUnit.FEET, Length.LengthUnit.INCHES));
+    }
+
+    @Test
+    public void testDemonstrateLengthConversion_Invalid_Throw() {
+        assertThrows(IllegalArgumentException.class, () -> demonstrateLengthConversion(-1.0, null, Length.LengthUnit.INCHES));
+    }
+
+    @Test
+    public void testDemonstrateLengthConversion_NaN_Throw() {
+        assertThrows(IllegalArgumentException.class, () -> demonstrateLengthConversion(Double.NaN, Length.LengthUnit.FEET, Length.LengthUnit.INCHES));
+    }
+
+    @Test
+    public void testDemonstrateLengthConversion_PrecisionTolerance() {
+        assertEquals(new Length(2.54e-6, Length.LengthUnit.CENTIMETRE), demonstrateLengthConversion(0.000001, Length.LengthUnit.INCHES, Length.LengthUnit.CENTIMETRE));
+    }
 }

@@ -1,6 +1,7 @@
 package com.apps.quantitymeasurement;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 public class Length {
     private Double value;
@@ -40,6 +41,18 @@ public class Length {
         return Double.compare(convertToBaseUnit(), length.convertToBaseUnit()) == 0;
     }
 
+    public Double convertTo(LengthUnit targetUnit) throws IllegalArgumentException {
+        if (!Double.isFinite(this.value)) {
+            throw new IllegalArgumentException("Value must be numeric");
+        }
+        if (Objects.isNull(unit) || Objects.isNull(targetUnit)) {
+            throw new IllegalArgumentException("Unit should not be null");
+        }
+        DecimalFormat df = new DecimalFormat("#.##");
+        double sourceValue = value * unit.getConversionFactor();
+        return Double.parseDouble(df.format(sourceValue / targetUnit.getConversionFactor()));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,6 +67,14 @@ public class Length {
         return this.compare(other);
     }
 
+    @Override
+    public String toString() {
+        return "Length{" +
+                "value=" + value +
+                ", unit=" + unit +
+                '}';
+    }
+
     public static void main(String[] args) {
         Length length1 = new Length(2.0, LengthUnit.FEET);
         Length length2 = new Length(24.0, LengthUnit.INCHES);
@@ -66,5 +87,8 @@ public class Length {
         Length length5 = new Length(1.0, LengthUnit.CENTIMETRE);
         Length length6 = new Length(0.393701, LengthUnit.INCHES);
         System.out.println("Are length equals: " + length5.equals(length6));
+
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+        System.out.println("Convert::==" + l1.convertTo(LengthUnit.CENTIMETRE));
     }
 }

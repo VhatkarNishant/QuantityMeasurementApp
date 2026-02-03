@@ -87,6 +87,17 @@ public class QuantityMeasurementApp {
         return length1.equals(length2);
     }
 
+    public static Length demonstrateLengthConversion(Double value, Length.LengthUnit fromUnit, Length.LengthUnit toUnit) throws IllegalArgumentException {
+        Length length = new Length(value, fromUnit);
+        Double v = length.convertTo(toUnit);
+        return new Length(v, toUnit);
+    }
+
+    public static Length demonstrateLengthConversion(Length fromLength, Length.LengthUnit toUnit) {
+        Double v = fromLength.convertTo(toUnit);
+        return new Length(v, toUnit);
+    }
+
     public static void main(String[] args) {
 //        demonstrateFeetEquality();
 //        demonstrateInchesEquality();
@@ -108,5 +119,8 @@ public class QuantityMeasurementApp {
 
         System.out.println(demonstrateLengthComparison(30.48, Length.LengthUnit.CENTIMETRE, 1.0, Length.LengthUnit.FEET)
                 ? "Equal(true)" : "Not-Equal(false)");
+
+        System.out.println("Converted val::" + demonstrateLengthConversion(1.0, Length.LengthUnit.FEET, Length.LengthUnit.CENTIMETRE));
+        System.out.println("Converted val::" + demonstrateLengthConversion(new Length(1.0, Length.LengthUnit.FEET), Length.LengthUnit.CENTIMETRE));
     }
 }
