@@ -1,9 +1,11 @@
 package com.apps.quantitymeasurement;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateLengthComparison;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class QuantityMeasurementAppTest {
 
@@ -247,9 +249,11 @@ public class QuantityMeasurementAppTest {
 
     @Test
     public void testDemonstrateLengthComparison_MultiUnit_TransitiveProperty() {
-        assertTrue(demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS, 3.0, Length.LengthUnit.FEET));
-        assertTrue(demonstrateLengthComparison(3.0, Length.LengthUnit.FEET, 36.0, Length.LengthUnit.INCHES));
-        assertTrue(demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS, 36.0, Length.LengthUnit.INCHES));
+        assertAll(
+                () -> assertTrue(demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS, 3.0, Length.LengthUnit.FEET)),
+                () -> assertTrue(demonstrateLengthComparison(3.0, Length.LengthUnit.FEET, 36.0, Length.LengthUnit.INCHES)),
+                () -> assertTrue(demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS, 36.0, Length.LengthUnit.INCHES))
+        );
     }
 
     @Test
