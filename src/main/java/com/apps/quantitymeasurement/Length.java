@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.Objects;
 
 public class Length {
+    public static final String FLOATING_POINT = "#.###";
     private Double value;
     private LengthUnit unit;
 
@@ -30,7 +31,7 @@ public class Length {
     }
 
     private Double convertToBaseUnit() {
-        DecimalFormat df = new DecimalFormat("#.##");
+        DecimalFormat df = new DecimalFormat(FLOATING_POINT);
         return Double.parseDouble(df.format(value * unit.getConversionFactor()));
     }
 
@@ -48,9 +49,9 @@ public class Length {
         if (Objects.isNull(unit) || Objects.isNull(targetUnit)) {
             throw new IllegalArgumentException("Unit should not be null");
         }
-        DecimalFormat df = new DecimalFormat("#.###");
+        DecimalFormat df = new DecimalFormat(FLOATING_POINT);
         Double sourceValue = value * unit.getConversionFactor();
-        return new Length(Double.parseDouble(df.format(sourceValue / targetUnit.getConversionFactor())),targetUnit);
+        return new Length(Double.parseDouble(df.format(sourceValue / targetUnit.getConversionFactor())), targetUnit);
     }
 
     public Length add(Length targetLength) {
