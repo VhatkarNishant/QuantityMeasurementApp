@@ -89,13 +89,15 @@ public class QuantityMeasurementApp {
 
     public static Length demonstrateLengthConversion(Double value, Length.LengthUnit fromUnit, Length.LengthUnit toUnit) throws IllegalArgumentException {
         Length length = new Length(value, fromUnit);
-        Double v = length.convertTo(toUnit);
-        return new Length(v, toUnit);
+        return length.convertTo(toUnit);
     }
 
     public static Length demonstrateLengthConversion(Length fromLength, Length.LengthUnit toUnit) {
-        Double v = fromLength.convertTo(toUnit);
-        return new Length(v, toUnit);
+        return fromLength.convertTo(toUnit);
+    }
+
+    public static Length demonstrateLengthAddition(Length length1, Length length2) {
+        return length1.add(length2);
     }
 
     public static void main(String[] args) {
@@ -122,5 +124,8 @@ public class QuantityMeasurementApp {
 
         System.out.println("Converted val::" + demonstrateLengthConversion(1.0, Length.LengthUnit.FEET, Length.LengthUnit.CENTIMETRE));
         System.out.println("Converted val::" + demonstrateLengthConversion(new Length(1.0, Length.LengthUnit.FEET), Length.LengthUnit.CENTIMETRE));
+
+
+        System.out.println("Add:::" + demonstrateLengthAddition(new Length(1.0, Length.LengthUnit.YARDS), new Length(3.0, Length.LengthUnit.FEET)));
     }
 }

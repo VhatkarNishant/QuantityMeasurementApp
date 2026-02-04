@@ -41,16 +41,28 @@ public class Length {
         return Double.compare(convertToBaseUnit(), length.convertToBaseUnit()) == 0;
     }
 
-    public Double convertTo(LengthUnit targetUnit) throws IllegalArgumentException {
+    public Length convertTo(LengthUnit targetUnit) throws IllegalArgumentException {
         if (!Double.isFinite(this.value)) {
             throw new IllegalArgumentException("Value must be numeric");
         }
         if (Objects.isNull(unit) || Objects.isNull(targetUnit)) {
             throw new IllegalArgumentException("Unit should not be null");
         }
-        DecimalFormat df = new DecimalFormat("#.##");
-        double sourceValue = value * unit.getConversionFactor();
-        return Double.parseDouble(df.format(sourceValue / targetUnit.getConversionFactor()));
+        DecimalFormat df = new DecimalFormat("#.###");
+        Double sourceValue = value * unit.getConversionFactor();
+        return new Length(Double.parseDouble(df.format(sourceValue / targetUnit.getConversionFactor())),targetUnit);
+    }
+
+    public Length add(Length targetLength) {
+        if (targetLength == null) {
+            throw new IllegalArgumentException("Length object should not be null");
+        }
+
+        if (!Double.isFinite(this.value) || !Double.isFinite(targetLength.value)) {
+            throw new IllegalArgumentException("Value must be numeric");
+        }
+        Length length = new Length(convertToBaseUnit() + targetLength.convertToBaseUnit(), LengthUnit.INCHES);
+        return length.convertTo(this.unit);
     }
 
     @Override
@@ -90,5 +102,12 @@ public class Length {
 
         Length l1 = new Length(1.0, LengthUnit.FEET);
         System.out.println("Convert::==" + l1.convertTo(LengthUnit.CENTIMETRE));
+        System.out.println("Convert::==" + l1.convertTo(LengthUnit.CENTIMETRE));
+
+        Length length7 = new Length(1.0, LengthUnit.YARDS);
+        Length length8 = new Length(3.0, LengthUnit.FEET);
+
+        System.out.println("VLLLLLLLLLLLLL" + length7.add(length8));
+
     }
 }
