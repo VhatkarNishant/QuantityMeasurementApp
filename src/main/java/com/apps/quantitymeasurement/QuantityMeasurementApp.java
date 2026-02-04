@@ -89,13 +89,11 @@ public class QuantityMeasurementApp {
 
     public static Length demonstrateLengthConversion(Double value, Length.LengthUnit fromUnit, Length.LengthUnit toUnit) throws IllegalArgumentException {
         Length length = new Length(value, fromUnit);
-        Double v = length.convertTo(toUnit);
-        return new Length(v, toUnit);
+        return length.convertTo(toUnit);
     }
 
     public static Length demonstrateLengthConversion(Length fromLength, Length.LengthUnit toUnit) {
-        Double v = fromLength.convertTo(toUnit);
-        return new Length(v, toUnit);
+        return fromLength.convertTo(toUnit);
     }
 
     public static void main(String[] args) {

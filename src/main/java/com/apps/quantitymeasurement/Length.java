@@ -41,16 +41,16 @@ public class Length {
         return Double.compare(convertToBaseUnit(), length.convertToBaseUnit()) == 0;
     }
 
-    public Double convertTo(LengthUnit targetUnit) throws IllegalArgumentException {
+    public Length convertTo(LengthUnit targetUnit) throws IllegalArgumentException {
         if (!Double.isFinite(this.value)) {
             throw new IllegalArgumentException("Value must be numeric");
         }
         if (Objects.isNull(unit) || Objects.isNull(targetUnit)) {
             throw new IllegalArgumentException("Unit should not be null");
         }
-        DecimalFormat df = new DecimalFormat("#.##");
-        double sourceValue = value * unit.getConversionFactor();
-        return Double.parseDouble(df.format(sourceValue / targetUnit.getConversionFactor()));
+        DecimalFormat df = new DecimalFormat("#.###");
+        Double sourceValue = value * unit.getConversionFactor();
+        return new Length(Double.parseDouble(df.format(sourceValue / targetUnit.getConversionFactor())),targetUnit);
     }
 
     @Override

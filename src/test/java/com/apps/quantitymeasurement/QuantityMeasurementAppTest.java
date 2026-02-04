@@ -344,8 +344,8 @@ public class QuantityMeasurementAppTest {
     @Test
     public void testDemonstrateLengthConversion_RoundTrip_PreservesValue() {
         Length length = new Length(6.0, Length.LengthUnit.FEET);
-        Double v = length.convertTo(Length.LengthUnit.YARDS);
-        assertEquals(length, demonstrateLengthConversion(v, Length.LengthUnit.YARDS, Length.LengthUnit.FEET));
+        Length v = length.convertTo(Length.LengthUnit.YARDS);
+        assertEquals(length, demonstrateLengthConversion(v, Length.LengthUnit.YARDS));
     }
 
     @Test
