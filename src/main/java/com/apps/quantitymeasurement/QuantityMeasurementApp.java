@@ -100,6 +100,10 @@ public class QuantityMeasurementApp {
         return length1.add(length2);
     }
 
+    public static Length demonstrateLengthAddition(Length length1, Length length2, Length.LengthUnit targetUnit) {
+        return length1.add(length2, targetUnit);
+    }
+
     public static void main(String[] args) {
 //        demonstrateFeetEquality();
 //        demonstrateInchesEquality();
@@ -127,5 +131,7 @@ public class QuantityMeasurementApp {
 
 
         System.out.println("Add:::" + demonstrateLengthAddition(new Length(1.0, Length.LengthUnit.YARDS), new Length(3.0, Length.LengthUnit.FEET)));
+
+        System.out.println("AddAndConvert:::" + demonstrateLengthAddition(new Length(1.0, Length.LengthUnit.FEET), new Length(12.0, Length.LengthUnit.INCHES), Length.LengthUnit.FEET));
     }
 }

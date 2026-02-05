@@ -5,8 +5,8 @@ import java.util.Objects;
 
 public class Length {
     public static final String FLOATING_POINT = "#.###";
-    private Double value;
-    private LengthUnit unit;
+    private final Double value;
+    private final LengthUnit unit;
 
     public enum LengthUnit {
         FEET(12.0),
@@ -58,12 +58,38 @@ public class Length {
         if (targetLength == null) {
             throw new IllegalArgumentException("Length object should not be null");
         }
-
+        if (Objects.isNull(targetLength.unit) || Objects.isNull(this.unit)) {
+            throw new IllegalArgumentException("Unit should not be null");
+        }
         if (!Double.isFinite(this.value) || !Double.isFinite(targetLength.value)) {
             throw new IllegalArgumentException("Value must be numeric");
         }
         Length length = new Length(convertToBaseUnit() + targetLength.convertToBaseUnit(), LengthUnit.INCHES);
         return length.convertTo(this.unit);
+    }
+
+    public Length add(Length targetLength, LengthUnit targetUnit) {
+        if (targetLength == null) {
+            throw new IllegalArgumentException("Length object should not be null");
+        }
+        if (Objects.isNull(targetUnit) || Objects.isNull(this.unit)) {
+            throw new IllegalArgumentException("Unit should not be null");
+        }
+        if (!Double.isFinite(this.value) || !Double.isFinite(targetLength.value)) {
+            throw new IllegalArgumentException("Value must be numeric");
+        }
+        return addAndConvert(targetLength, targetUnit);
+    }
+
+    private Length addAndConvert(Length targetLength, LengthUnit targetUnit) {
+        Length length = new Length(convertToBaseUnit() + targetLength.convertToBaseUnit(), LengthUnit.INCHES);
+        return length.convertFromBaseToTargetUnit(length.value, targetUnit);
+    }
+
+    private Length convertFromBaseToTargetUnit(double lengthInInches, LengthUnit targetUnit) {
+        DecimalFormat df = new DecimalFormat(FLOATING_POINT);
+        Double sourceValue = lengthInInches * unit.getConversionFactor();
+        return new Length(Double.parseDouble(df.format(sourceValue / targetUnit.getConversionFactor())), targetUnit);
     }
 
     @Override
@@ -108,7 +134,11 @@ public class Length {
         Length length7 = new Length(1.0, LengthUnit.YARDS);
         Length length8 = new Length(3.0, LengthUnit.FEET);
 
-        System.out.println("VLLLLLLLLLLLLL" + length7.add(length8));
+        System.out.println("Add" + length7.add(length8));
+
+        Length length9 = new Length(1.0, LengthUnit.FEET);
+        Length length10 = new Length(12.0, LengthUnit.INCHES);
+        System.out.println("AddAndConvert" + length10.add(length9));
 
     }
 }
