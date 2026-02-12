@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import static com.apps.quantitymeasurement.QuantityMeasurementApp.*;
 import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateLengthAddition;
+import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateWeightAddition;
+import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateWeightEquality;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -456,7 +458,157 @@ public class QuantityMeasurementAppTest {
         assertEquals(new Length(1.334, LengthUnit.YARDS),
                 demonstrateLengthAddition(demonstrateLengthAddition(new Length(12.0, LengthUnit.INCHES),
                         new Length(12.0, LengthUnit.INCHES),
-                        LengthUnit.YARDS),demonstrateLengthAddition(new Length(12.0, LengthUnit.INCHES),
+                        LengthUnit.YARDS), demonstrateLengthAddition(new Length(12.0, LengthUnit.INCHES),
                         new Length(12.0, LengthUnit.INCHES), LengthUnit.YARDS), LengthUnit.YARDS));
+    }
+
+    @Test
+    public void testEquality_KilogramToKilogram_SameValue() {
+        assertTrue(demonstrateWeightEquality(new Weight(1.0, WeightUnit.KILOGRAM), new Weight(1.0, WeightUnit.KILOGRAM)));
+    }
+
+    @Test
+    public void testEquality_KilogramToKilogram_DifferentValue() {
+        assertFalse(demonstrateWeightEquality(new Weight(1.0, WeightUnit.KILOGRAM), new Weight(10.0, WeightUnit.KILOGRAM)));
+    }
+
+    @Test
+    public void testEquality_KilogramToGram_EquivalentValue() {
+        assertTrue(demonstrateWeightEquality(new Weight(1.0, WeightUnit.KILOGRAM), new Weight(1000.0, WeightUnit.GRAM)));
+    }
+
+    @Test
+    public void testEquality_GramToKilogram_EquivalentValue() {
+        assertTrue(demonstrateWeightEquality(new Weight(1000.0, WeightUnit.GRAM), new Weight(1.0, WeightUnit.KILOGRAM)));
+    }
+
+    @Test
+    public void testEquality_WeightVSLength_Incompatible() {
+        assertFalse(new Weight(1000.0, WeightUnit.GRAM).equals(new Length(10.0, LengthUnit.FEET)));
+    }
+
+    @Test
+    public void testEquality_NullComparison() {
+        assertFalse(demonstrateWeightEquality(new Weight(1000.0, WeightUnit.GRAM), null));
+    }
+
+    @Test
+    public void testEquality_SameReference_ForWeight() {
+        Weight w1 = new Weight(1000.0, WeightUnit.GRAM);
+        Weight w2 = w1;
+        assertTrue(demonstrateWeightEquality(w1, w2));
+    }
+
+    @Test
+    public void testEquality_NullUnit() {
+        assertThrows(IllegalArgumentException.class, () -> new Weight(10.0, null));
+    }
+
+    @Test
+    public void testEquality_TransitivityProperty() {
+        Weight w1 = new Weight(1.0, WeightUnit.KILOGRAM);
+        Weight w2 = new Weight(1000.0, WeightUnit.GRAM);
+
+        assertAll(
+                () -> assertTrue(demonstrateWeightEquality(w1, w2)),
+                () -> assertTrue(demonstrateWeightEquality(w1, w2)),
+                () -> assertTrue(demonstrateWeightEquality(w1, new Weight(1.0, WeightUnit.KILOGRAM)))
+        );
+    }
+
+
+    @Test
+    public void testEquality_ZeroValue() {
+        assertTrue(demonstrateWeightEquality(new Weight(0.0, WeightUnit.GRAM), new Weight(0.0, WeightUnit.KILOGRAM)));
+    }
+
+    @Test
+    public void testEquality_NegativeWeight() {
+        assertTrue(demonstrateWeightEquality(new Weight(-1.0, WeightUnit.KILOGRAM), new Weight(-1000.0, WeightUnit.GRAM)));
+    }
+
+    @Test
+    public void testEquality_LargeWeightValue() {
+        assertTrue(demonstrateWeightEquality(new Weight(1000000.0, WeightUnit.GRAM), new Weight(1000.0, WeightUnit.KILOGRAM)));
+    }
+
+    @Test
+    public void testEquality_SmallWeightValue() {
+        assertTrue(demonstrateWeightEquality(new Weight(0.001, WeightUnit.KILOGRAM), new Weight(1.0, WeightUnit.GRAM)));
+    }
+
+
+    @Test
+    public void testConversion_PoundToKilogram() {
+        assertEquals(new Weight(1.0, WeightUnit.KILOGRAM), demonstrateWeightConversion(2.20462, WeightUnit.POUND, WeightUnit.KILOGRAM));
+    }
+
+    @Test
+    public void testConversion_KilogramToPound() {
+        assertEquals(new Weight(2.2, WeightUnit.POUND), demonstrateWeightConversion(1.0, WeightUnit.KILOGRAM, WeightUnit.POUND));
+    }
+
+
+    @Test
+    public void testConversion_SameUnit() {
+        assertEquals(new Weight(1.0, WeightUnit.KILOGRAM), demonstrateWeightConversion(1.0, WeightUnit.KILOGRAM, WeightUnit.KILOGRAM));
+    }
+
+    @Test
+    public void testConversion_ZeroValue() {
+        assertEquals(new Weight(0.0, WeightUnit.KILOGRAM), demonstrateWeightConversion(0.0, WeightUnit.KILOGRAM, WeightUnit.KILOGRAM));
+    }
+
+    @Test
+    public void testConversion_NegativeValue() {
+        assertEquals(new Weight(-1000.0, WeightUnit.GRAM), demonstrateWeightConversion(-1.0, WeightUnit.KILOGRAM, WeightUnit.GRAM));
+    }
+
+    @Test
+    public void testConversion_RoundTrip() {
+        assertEquals(new Weight(1.5, WeightUnit.KILOGRAM), demonstrateWeightConversion(1.5, WeightUnit.KILOGRAM, WeightUnit.GRAM).convertTo(WeightUnit.KILOGRAM));
+    }
+
+    @Test
+    public void testAddition_SameUnit_KilogramPlusKilogram() {
+        assertEquals(new Weight(3.0, WeightUnit.KILOGRAM), demonstrateWeightAddition(new Weight(1.0, WeightUnit.KILOGRAM), new Weight(2.0, WeightUnit.KILOGRAM)));
+    }
+
+    @Test
+    public void testAddition_CrossUnit_KilogramPlusGram() {
+        assertEquals(new Weight(2.0, WeightUnit.KILOGRAM), demonstrateWeightAddition(new Weight(1.0, WeightUnit.KILOGRAM), new Weight(1000.0, WeightUnit.GRAM)));
+    }
+
+    @Test
+    public void testAddition_CrossUnit_PoundPlusKilogram() {
+        assertEquals(new Weight(4.41, WeightUnit.POUND), demonstrateWeightAddition(new Weight(2.20462, WeightUnit.POUND), new Weight(1.0, WeightUnit.KILOGRAM)));
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_Kilogram() {
+        assertEquals(new Weight(2000.0, WeightUnit.GRAM), demonstrateWeightAddition(new Weight(1.0, WeightUnit.KILOGRAM), new Weight(1000.0, WeightUnit.GRAM), WeightUnit.GRAM));
+    }
+
+    @Test
+    public void testAddition_Commutativity() {
+        Weight w1 = new Weight(1.0, WeightUnit.KILOGRAM);
+        Weight w2 = new Weight(1000.0, WeightUnit.GRAM);
+        assertEquals(demonstrateWeightAddition(w1, w2), demonstrateWeightAddition(w2, w1));
+    }
+
+    @Test
+    public void testAddition_WithZero() {
+        assertEquals(new Weight(2.0, WeightUnit.KILOGRAM), demonstrateWeightAddition(new Weight(2.0, WeightUnit.KILOGRAM), new Weight(0.0, WeightUnit.GRAM), WeightUnit.KILOGRAM));
+    }
+
+
+    @Test
+    public void testAddition_NegativeValues() {
+        assertEquals(new Weight(3.0, WeightUnit.KILOGRAM), demonstrateWeightAddition(new Weight(5.0, WeightUnit.KILOGRAM), new Weight(-2000.0, WeightUnit.GRAM), WeightUnit.KILOGRAM));
+    }
+
+    @Test
+    public void testAddition_LargeValues() {
+        assertEquals(new Weight(2e6, WeightUnit.KILOGRAM), demonstrateWeightAddition(new Weight(1e6, WeightUnit.KILOGRAM), new Weight(1e6, WeightUnit.KILOGRAM)));
     }
 }
