@@ -2,7 +2,7 @@ package com.apps.quantitymeasurement;
 
 import java.text.DecimalFormat;
 
-public enum LengthUnit {
+public enum LengthUnit implements IMeasurable {
 
     FEET(12.0),
     INCHES(1.0),
@@ -15,21 +15,40 @@ public enum LengthUnit {
         this.conversionFactor = conversionFactor;
     }
 
+//    public Double getConversionFactor() {
+//        return conversionFactor;
+//    }
+
+    @Override
     public Double getConversionFactor() {
         return conversionFactor;
     }
 
-    public static final String FLOATING_POINT = "#.###";
-    DecimalFormat df = new DecimalFormat(FLOATING_POINT);
-
+    @Override
     public Double convertToBaseUnit(Double value) {
-        //DecimalFormat df = new DecimalFormat(FLOATING_POINT);
-        return Double.parseDouble(df.format(value * this.getConversionFactor()));
+        return Math.round((value * this.getConversionFactor()) * 100.0) / 100.0;
     }
 
 
+    @Override
     public Double convertFromBaseUnit(Double baseValue) {
-        //DecimalFormat df = new DecimalFormat(FLOATING_POINT);
-        return Double.parseDouble(df.format(baseValue / this.getConversionFactor()));
+        return Math.round((baseValue / this.getConversionFactor()) * 100.0) / 100.0;
     }
+
+
+//    public static final String FLOATING_POINT = "#.###";
+//    DecimalFormat df = new DecimalFormat(FLOATING_POINT);
+//
+//    public Double convertToBaseUnit(Double value) {
+//        //DecimalFormat df = new DecimalFormat(FLOATING_POINT);
+//        return Double.parseDouble(df.format(value * this.getConversionFactor()));
+//    }
+//
+//
+//    public Double convertFromBaseUnit(Double baseValue) {
+//        //DecimalFormat df = new DecimalFormat(FLOATING_POINT);
+//        return Double.parseDouble(df.format(baseValue / this.getConversionFactor()));
+//    }
+
+
 }

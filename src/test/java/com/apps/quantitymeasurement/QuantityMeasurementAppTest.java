@@ -403,7 +403,7 @@ public class QuantityMeasurementAppTest {
 
     @Test
     public void testDemonstrateLengthAddition_ExplicitTargetUnit_Yards() {
-        assertEquals(new Length(0.667, LengthUnit.YARDS), demonstrateLengthAddition(new Length(1.0, LengthUnit.FEET), new Length(12.0, LengthUnit.INCHES), LengthUnit.YARDS));
+        assertEquals(new Length(0.67, LengthUnit.YARDS), demonstrateLengthAddition(new Length(1.0, LengthUnit.FEET), new Length(12.0, LengthUnit.INCHES), LengthUnit.YARDS));
     }
 
     @Test
@@ -430,7 +430,7 @@ public class QuantityMeasurementAppTest {
 
     @Test
     public void testDemonstrateLengthAddition_ExplicitTargetUnit_WithZero() {
-        assertEquals(new Length(1.667, LengthUnit.YARDS), demonstrateLengthAddition(new Length(5.0, LengthUnit.FEET), new Length(0.0, LengthUnit.INCHES), LengthUnit.YARDS));
+        assertEquals(new Length(1.67, LengthUnit.YARDS), demonstrateLengthAddition(new Length(5.0, LengthUnit.FEET), new Length(0.0, LengthUnit.INCHES), LengthUnit.YARDS));
     }
 
     @Test
@@ -450,12 +450,12 @@ public class QuantityMeasurementAppTest {
 
     @Test
     public void testDemonstrateLengthAddition_ExplicitTargetUnit_SmallToLargeScale() {
-        assertEquals(new Length(0.667, LengthUnit.YARDS), demonstrateLengthAddition(new Length(12.0, LengthUnit.INCHES), new Length(12.0, LengthUnit.INCHES), LengthUnit.YARDS));
+        assertEquals(new Length(0.67, LengthUnit.YARDS), demonstrateLengthAddition(new Length(12.0, LengthUnit.INCHES), new Length(12.0, LengthUnit.INCHES), LengthUnit.YARDS));
     }
 
     @Test
     public void testDemonstrateLengthAddition_ExplicitTargetUnit_AllUnitCombinations() {
-        assertEquals(new Length(1.334, LengthUnit.YARDS),
+        assertEquals(new Length(1.34, LengthUnit.YARDS),
                 demonstrateLengthAddition(demonstrateLengthAddition(new Length(12.0, LengthUnit.INCHES),
                         new Length(12.0, LengthUnit.INCHES),
                         LengthUnit.YARDS), demonstrateLengthAddition(new Length(12.0, LengthUnit.INCHES),
