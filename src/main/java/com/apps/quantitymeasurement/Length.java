@@ -8,23 +8,6 @@ public class Length {
     private final Double value;
     private final LengthUnit unit;
 
-//    public enum LengthUnit {
-//        FEET(12.0),
-//        INCHES(1.0),
-//        YARDS(36.0),
-//        CENTIMETRE(0.393701);
-//
-//        private final double conversionFactor;
-//
-//        LengthUnit(Double conversionFactor) {
-//            this.conversionFactor = conversionFactor;
-//        }
-//
-//        public Double getConversionFactor() {
-//            return conversionFactor;
-//        }
-//    }
-
     public Length(Double value, LengthUnit unit) {
         if (Objects.isNull(value) || Objects.isNull(unit)) {
             throw new IllegalArgumentException("Null value is not allowed");
@@ -37,8 +20,6 @@ public class Length {
     }
 
     private Double convertToBaseUnit() {
-//        DecimalFormat df = new DecimalFormat(FLOATING_POINT);
-//        return Double.parseDouble(df.format(value * unit.getConversionFactor()));
         return unit.convertToBaseUnit(value);
     }
 
@@ -94,9 +75,6 @@ public class Length {
     }
 
     private Length convertFromBaseToTargetUnit(double lengthInInches, LengthUnit targetUnit) {
-        // DecimalFormat df = new DecimalFormat(FLOATING_POINT);
-        //Double sourceValue = lengthInInches * unit.getConversionFactor();
-        //return new Length(Double.parseDouble(df.format(sourceValue / targetUnit.getConversionFactor())), targetUnit);
         return new Length(targetUnit.convertFromBaseUnit(lengthInInches), targetUnit);
     }
 

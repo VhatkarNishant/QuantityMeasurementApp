@@ -3,15 +3,20 @@ package com.apps.quantitymeasurement;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.apps.quantitymeasurement.QuantityMeasurementApp.*;
+import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateAddition;
+import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateConversion;
+import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateEquality;
 import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateLengthAddition;
+import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateLengthComparison;
+import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateLengthConversion;
 import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateWeightAddition;
+import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateWeightConversion;
 import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateWeightEquality;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class QuantityMeasurementAppTest {
