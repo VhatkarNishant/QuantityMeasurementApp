@@ -134,6 +134,22 @@ public class QuantityMeasurementApp {
         return weight1.add(weight2, targetUnit);
     }
 
+    public static <U extends IMeasurable> boolean demonstrateEquality(Quantity<U> quantity1, Quantity<U> quantity2) {
+        return quantity1.equals(quantity2);
+    }
+
+    public static <U extends IMeasurable> Quantity<U> demonstrateConversion(Quantity<U> quantity, U targetUnit) {
+        return quantity.convertTo(targetUnit);
+    }
+
+    public static <U extends IMeasurable> Quantity<U> demonstrateAddition(Quantity<U> quantity1, Quantity<U> quantity2) {
+        return quantity1.add(quantity2);
+    }
+
+    public static <U extends IMeasurable> Quantity<U> demonstrateAddition(Quantity<U> quantity1, Quantity<U> quantity2, U targetUnit) {
+        return quantity1.add(quantity2, targetUnit);
+    }
+
 
     public static void main(String[] args) {
 //        demonstrateFeetEquality();
@@ -174,6 +190,7 @@ public class QuantityMeasurementApp {
         System.out.println("demonstrateWeightConversion::" + demonstrateWeightConversion(w3, WeightUnit.KILOGRAM));
         System.out.println("demonstrateWeightAddition::" + demonstrateWeightAddition(new Weight(10.0, WeightUnit.KILOGRAM), w3));
         System.out.println("demonstrateWeightAddition::" + demonstrateWeightAddition(w3, w3, WeightUnit.KILOGRAM));
+        System.out.println("demonstrateWeightAddition::" + demonstrateWeightAddition(new Weight(1.0, WeightUnit.KILOGRAM), w3, WeightUnit.POUND));
 
 
     }

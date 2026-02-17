@@ -3,6 +3,9 @@ package com.apps.quantitymeasurement;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.apps.quantitymeasurement.QuantityMeasurementApp.*;
 import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateLengthAddition;
 import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateWeightAddition;
@@ -611,4 +614,74 @@ public class QuantityMeasurementAppTest {
     public void testAddition_LargeValues() {
         assertEquals(new Weight(2e6, WeightUnit.KILOGRAM), demonstrateWeightAddition(new Weight(1e6, WeightUnit.KILOGRAM), new Weight(1e6, WeightUnit.KILOGRAM)));
     }
+
+    @Test
+    public void testGenericQuantity_LengthOperations_Equality() {
+        assertTrue(demonstrateEquality(new Quantity<>(1.0, LengthUnit.FEET), new Quantity<>(12.0, LengthUnit.INCHES)));
+    }
+
+    @Test
+    public void testGenericQuantity_WeightOperations_Equality() {
+        assertTrue(demonstrateEquality(new Quantity<>(1.0, WeightUnit.KILOGRAM), new Quantity<>(1000.0, WeightUnit.GRAM)));
+    }
+
+    @Test
+    public void testGenericQuantity_LengthOperations_Conversion() {
+        assertEquals(new Quantity<>(12.0, LengthUnit.INCHES), demonstrateConversion(new Quantity<>(1.0, LengthUnit.FEET), LengthUnit.INCHES));
+    }
+
+    @Test
+    public void testGenericQuantity_WeightOperations_Conversion() {
+        assertEquals(new Quantity<>(1.0, WeightUnit.KILOGRAM), demonstrateConversion(new Quantity<>(1000.0, WeightUnit.GRAM), WeightUnit.KILOGRAM));
+    }
+
+    @Test
+    public void testGenericQuantity_LengthOperations_Addition() {
+        assertEquals(new Quantity<>(2.0, LengthUnit.FEET), demonstrateAddition(new Quantity<>(1.0, LengthUnit.FEET), new Quantity<>(12.0, LengthUnit.INCHES)));
+    }
+
+    @Test
+    public void testGenericQuantity_WeightOperations_Addition() {
+        assertEquals(new Quantity<>(3.0, WeightUnit.KILOGRAM), demonstrateAddition(new Quantity<>(1000.0, WeightUnit.GRAM), new Quantity<>(2.0, WeightUnit.KILOGRAM), WeightUnit.KILOGRAM));
+
+    }
+
+    @Test
+    public void testCrossCategoryPrevention_LengthVsWeight() {
+        assertFalse(demonstrateEquality(new Quantity<>(1.0, LengthUnit.FEET), new Quantity<>(1.0, WeightUnit.GRAM)));
+    }
+
+    @Test
+    public void testGenericQuantity_ConstructionValidation_NullUnit() {
+        assertThrows(IllegalArgumentException.class, () -> new Quantity<>(1.0, null));
+    }
+
+    @Test
+    public void testGenericQuantity_ConstructionValidation_InvalidValue() {
+        assertThrows(IllegalArgumentException.class, () -> new Quantity<>(Double.NaN, LengthUnit.INCHES));
+    }
+
+    @Test
+    public void testGenericQuantity_Conversion_AllUnitCombinations() {
+        assertAll(
+                () -> assertEquals(new Quantity<>(12.0, LengthUnit.INCHES), demonstrateConversion(new Quantity<>(1.0, LengthUnit.FEET), LengthUnit.INCHES)),
+                () -> assertEquals(new Quantity<>(2.0, LengthUnit.FEET), demonstrateConversion(new Quantity<>(24.0, LengthUnit.INCHES), LengthUnit.FEET)),
+                () -> assertEquals(new Quantity<>(36.0, LengthUnit.INCHES), demonstrateConversion(new Quantity<>(1.0, LengthUnit.YARDS), LengthUnit.INCHES)),
+                () -> assertEquals(new Quantity<>(2.0, LengthUnit.YARDS), demonstrateConversion(new Quantity<>(72.0, LengthUnit.INCHES), LengthUnit.YARDS)),
+                () -> assertEquals(new Quantity<>(1.0, LengthUnit.INCHES), demonstrateConversion(new Quantity<>(2.54, LengthUnit.CENTIMETRE), LengthUnit.INCHES)),
+                () -> assertEquals(new Quantity<>(2.0, LengthUnit.YARDS), demonstrateConversion(new Quantity<>(6.0, LengthUnit.FEET), LengthUnit.YARDS))
+        );
+    }
+
+    @Test
+    public void testGenericQuantity_Addition_AllUnitCombinations() {
+        assertAll(
+                () -> assertEquals(new Quantity<>(3.0, LengthUnit.FEET), demonstrateAddition(new Quantity<>(1.0, LengthUnit.FEET), new Quantity<>(2.0, LengthUnit.FEET))),
+                () -> assertEquals(new Quantity<>(12.0, LengthUnit.INCHES), demonstrateAddition(new Quantity<>(6.0, LengthUnit.INCHES), new Quantity<>(6.0, LengthUnit.INCHES))),
+                () -> assertEquals(new Quantity<>(2.0, LengthUnit.FEET), demonstrateAddition(new Quantity<>(1.0, LengthUnit.FEET), new Quantity<>(12.0, LengthUnit.INCHES))),
+                () -> assertEquals(new Quantity<>(24.0, LengthUnit.INCHES), demonstrateAddition(new Quantity<>(12.0, LengthUnit.INCHES), new Quantity<>(1.0, LengthUnit.FEET))),
+                () -> assertEquals(new Quantity<>(2.0, LengthUnit.YARDS), demonstrateAddition(new Quantity<>(1.0, LengthUnit.YARDS), new Quantity<>(3.0, LengthUnit.FEET)))
+        );
+    }
+
 }

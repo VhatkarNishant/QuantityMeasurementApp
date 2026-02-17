@@ -1,7 +1,5 @@
 package com.apps.quantitymeasurement;
 
-import java.text.DecimalFormat;
-
 public enum LengthUnit implements IMeasurable {
 
     FEET(12.0),
@@ -14,10 +12,6 @@ public enum LengthUnit implements IMeasurable {
     LengthUnit(Double conversionFactor) {
         this.conversionFactor = conversionFactor;
     }
-
-//    public Double getConversionFactor() {
-//        return conversionFactor;
-//    }
 
     @Override
     public Double getConversionFactor() {
@@ -35,20 +29,9 @@ public enum LengthUnit implements IMeasurable {
         return Math.round((baseValue / this.getConversionFactor()) * 100.0) / 100.0;
     }
 
-
-//    public static final String FLOATING_POINT = "#.###";
-//    DecimalFormat df = new DecimalFormat(FLOATING_POINT);
-//
-//    public Double convertToBaseUnit(Double value) {
-//        //DecimalFormat df = new DecimalFormat(FLOATING_POINT);
-//        return Double.parseDouble(df.format(value * this.getConversionFactor()));
-//    }
-//
-//
-//    public Double convertFromBaseUnit(Double baseValue) {
-//        //DecimalFormat df = new DecimalFormat(FLOATING_POINT);
-//        return Double.parseDouble(df.format(baseValue / this.getConversionFactor()));
-//    }
-
+    @Override
+    public String getUnitName() {
+        return this.name();
+    }
 
 }

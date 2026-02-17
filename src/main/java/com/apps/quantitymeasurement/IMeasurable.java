@@ -7,6 +7,8 @@ public interface IMeasurable {
 
     Double convertFromBaseUnit(Double baseValue);
 
+    String getUnitName();
+
     public static void main(String[] args) {
 
     }

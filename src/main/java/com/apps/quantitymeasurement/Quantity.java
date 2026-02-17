@@ -26,12 +26,12 @@ public class Quantity<U extends IMeasurable> {
         return unit;
     }
 
-    public <U extends IMeasurable> Double convertTo(U targetUnit) {
+    public <U extends IMeasurable> Quantity<U> convertTo(U targetUnit) {
         if (Objects.isNull(targetUnit)) {
             throw new IllegalArgumentException("Unit should not be null");
         }
 
-        return targetUnit.convertFromBaseUnit(unit.convertToBaseUnit(value));
+        return new Quantity<>(targetUnit.convertFromBaseUnit(unit.convertToBaseUnit(value)), targetUnit);
     }
 
     public Quantity<U> add(Quantity<U> other) {
@@ -47,9 +47,7 @@ public class Quantity<U extends IMeasurable> {
             throw new IllegalArgumentException("Quantity object should not be null");
         }
         Double baseSumValue = unit.convertToBaseUnit(value) + other.unit.convertToBaseUnit(other.getValue());
-        //Quantity<U> uQuantity = new Quantity<>(baseSumValue, unit);
-
-        return new Quantity<>(unit.convertFromBaseUnit(baseSumValue), targetUnit);
+        return new Quantity<>(targetUnit.convertFromBaseUnit(baseSumValue), targetUnit);
     }
 
     @Override
@@ -109,9 +107,7 @@ public class Quantity<U extends IMeasurable> {
 
         System.out.println("Weight addition .." + weightUnitInKilogram.add(weightUnitInKilogram));
         System.out.println("Weight addition .." + weightUnitIngram.add(weightUnitIngram));
-        System.out.println("Weight addition for pound .." + weightUnitInKilogram.add(weightUnitIngram,WeightUnit.POUND));
-
-
+        System.out.println("Weight addition for pound .." + weightUnitInKilogram.add(weightUnitIngram, WeightUnit.POUND));
 
     }
 }
